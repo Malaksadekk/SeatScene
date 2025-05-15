@@ -1,0 +1,9 @@
+Connecting to MongoDB...
+Available routes:
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/users/profile
+- PUT /api/users/profile
+Connected to MongoDB
+Server is running on port 5001
+Test the server at: http://localhost:5001/api/test
