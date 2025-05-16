@@ -85,7 +85,8 @@ exports.createMovie = async (req, res) => {
       posterUrl: req.body.posterUrl,
       capacity: req.body.capacity,
       screenType: req.body.screenType,
-      amenities: req.body.amenities || []
+      amenities: req.body.amenities || [],
+      showtimes: req.body.showtimes || []
     });
     await movie.save();
     res.status(201).json(movie);
@@ -112,6 +113,7 @@ exports.updateMovie = async (req, res) => {
     movie.capacity = req.body.capacity || movie.capacity;
     movie.screenType = req.body.screenType || movie.screenType;
     movie.amenities = req.body.amenities || movie.amenities;
+    movie.showtimes = req.body.showtimes || movie.showtimes;
 
     const updatedMovie = await movie.save();
     res.json(updatedMovie);

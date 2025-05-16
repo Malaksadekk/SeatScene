@@ -118,8 +118,8 @@ const Login = () => {
         toast.info('Redirecting to admin dashboard...');
         setTimeout(() => navigate('/admin'), 1500);
       } else {
-        toast.info('Redirecting to profile...');
-        setTimeout(() => navigate('/profile'), 1500);
+        toast.info('Redirecting to movies...');
+        setTimeout(() => navigate('/movies'), 1500);
       }
 
     } catch (error) {

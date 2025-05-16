@@ -11,11 +11,13 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     posterUrl: '',
     capacity: '',
     screenType: '2D',
-    amenities: []
+    amenities: [],
+    showtimes: []
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [newAmenity, setNewAmenity] = useState('');
+  const [newShowtime, setNewShowtime] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +41,23 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     setFormData(prev => ({
       ...prev,
       amenities: prev.amenities.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleAddShowtime = () => {
+    if (newShowtime.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        showtimes: [...prev.showtimes, newShowtime.trim()]
+      }));
+      setNewShowtime('');
+    }
+  };
+
+  const handleRemoveShowtime = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      showtimes: prev.showtimes.filter((_, i) => i !== index)
     }));
   };
 
@@ -197,6 +216,27 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
                     ×
                   </button>
                 </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Showtimes</label>
+            <div className="list-input">
+              <input
+                type="text"
+                value={newShowtime}
+                onChange={(e) => setNewShowtime(e.target.value)}
+                placeholder="Add showtime (e.g., 10:00 AM)"
+              />
+              <button type="button" onClick={handleAddShowtime}>Add</button>
+            </div>
+            <div className="list-items">
+              {formData.showtimes.map((showtime, index) => (
+                <div key={index} className="list-item">
+                  <span>{showtime}</span>
+                  <button type="button" onClick={() => handleRemoveShowtime(index)}>×</button>
+                </div>
               ))}
             </div>
           </div>

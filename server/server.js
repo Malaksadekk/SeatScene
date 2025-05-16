@@ -10,6 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Connect to MongoDB
+connectDB();
+
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/movies', movieRoutes);
