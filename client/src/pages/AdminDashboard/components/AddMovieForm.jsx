@@ -44,23 +44,6 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     }));
   };
 
-  const handleAddShowtime = () => {
-    if (newShowtime.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        showtimes: [...prev.showtimes, newShowtime.trim()]
-      }));
-      setNewShowtime('');
-    }
-  };
-
-  const handleRemoveShowtime = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      showtimes: prev.showtimes.filter((_, i) => i !== index)
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -216,27 +199,6 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
                     ×
                   </button>
                 </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label>Showtimes</label>
-            <div className="list-input">
-              <input
-                type="text"
-                value={newShowtime}
-                onChange={(e) => setNewShowtime(e.target.value)}
-                placeholder="Add showtime (e.g., 10:00 AM)"
-              />
-              <button type="button" onClick={handleAddShowtime}>Add</button>
-            </div>
-            <div className="list-items">
-              {formData.showtimes.map((showtime, index) => (
-                <div key={index} className="list-item">
-                  <span>{showtime}</span>
-                  <button type="button" onClick={() => handleRemoveShowtime(index)}>×</button>
-                </div>
               ))}
             </div>
           </div>

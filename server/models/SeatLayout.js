@@ -1,11 +1,5 @@
 const mongoose = require('mongoose');
-
-const seatSchema = new mongoose.Schema({
-  row: { type: String, required: true },
-  number: { type: Number, required: true },
-  type: { type: String, enum: ['regular', 'vip'], required: true },
-  available: { type: Boolean, default: true }
-});
+const Seat = require('./Seat');
 
 const seatingSchema = new mongoose.Schema({
   vipPrice: { type: Number, required: true },
@@ -14,7 +8,7 @@ const seatingSchema = new mongoose.Schema({
   rows: { type: Number, required: true }, // Total number of rows
   seatsPerRow: { type: Number, required: true }, // Seats per row
   unavailableSeats: [{ type: String, required: false }], // Array of seat identifiers (e.g., "A9")
-  seats: [seatSchema] // Optional: pre-populated seats based on configuration
+  seats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Seat' }] // Reference to Seat model
 });
 
 const movieSchema = new mongoose.Schema({
@@ -22,4 +16,5 @@ const movieSchema = new mongoose.Schema({
   seating: { type: seatingSchema, required: true }
 });
 
-module.exports = mongoose.model('Movie', movieSchema);
+// Check if model exists before creating
+module.exports = mongoose.models.Movie || mongoose.model('Movie', movieSchema);

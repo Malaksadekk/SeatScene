@@ -205,6 +205,27 @@
   border: none; /* Remove borders */
 }
 
+.movie-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  color: #b19cd9;
+  font-size: 0.9rem;
+}
+
+.movie-genre {
+  font-weight: 500;
+}
+
+.movie-duration {
+  color: #fff;
+}
+
+.movie-screen-type {
+  color: #ffd600;
+}
+
 @media (max-width: 600px) {
   .cinema-title { font-size: 1.5rem; }
   .movie-card { width: 48vw; }

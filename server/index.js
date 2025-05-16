@@ -43,7 +43,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     // Start server only after successful database connection
-    const PORT = process.env.PORT || 5002;
+    const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
       console.log(`Test the server at: http://localhost:${PORT}/api/test`);
@@ -60,6 +60,7 @@ const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
 const movieRoutes = require('./routes/movie');
 const seatsRoutes = require('./routes/seats');
+const bookingRoutes = require('./routes/booking');
 
 // Log available routes
 console.log('Available routes:');
@@ -67,6 +68,9 @@ console.log('- POST /api/auth/register');
 console.log('- POST /api/auth/login');
 console.log('- GET /api/users/profile');
 console.log('- PUT /api/users/profile');
+console.log('- GET /api/movies');
+console.log('- GET /api/seats');
+console.log('- POST /api/booking');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -74,6 +78,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/seats', seatsRoutes);
+app.use('/api/booking', bookingRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

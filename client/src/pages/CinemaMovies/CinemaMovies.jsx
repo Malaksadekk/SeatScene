@@ -9,21 +9,28 @@ const CinemaMovies = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [selectedTime, setSelectedTime] = useState(null); // Track only one selected time globally
+  const [selectedTime, setSelectedTime] = useState(null);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/movies')
+    fetch('/api/admin/movies')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch movies');
         return res.json();
       })
       .then((data) => {
-        const processed = data.map((movie, idx) => ({
+        const processed = data.map((movie) => ({
           ...movie,
-          poster: movie.poster || movie.posterUrl || movie.image || DEFAULT_IMAGE,
-          title: movie.title || `Movie ${idx + 1}`,
+          poster: movie.posterUrl || DEFAULT_IMAGE,
+          title: movie.title,
+          description: movie.description,
+          duration: movie.duration,
+          genre: movie.genre,
+          releaseDate: movie.releaseDate,
+          screenType: movie.screenType,
+          amenities: movie.amenities || [],
+          showtimes: movie.showtimes || []
         }));
         setMovies(processed);
         setLoading(false);
@@ -56,7 +63,14 @@ const CinemaMovies = () => {
 
   const handleBuyTicket = () => {
     if (selectedMovieId && selectedTime) {
-      navigate('/seating', { state: { movieId: selectedMovieId, showTime: selectedTime } });
+      const selectedMovie = movies.find(m => m._id === selectedMovieId);
+      navigate('/seating', { 
+        state: { 
+          movieId: selectedMovieId, 
+          showTime: selectedTime,
+          movieName: selectedMovie.title
+        } 
+      });
     }
   };
 
@@ -72,45 +86,47 @@ const CinemaMovies = () => {
       <div className="slider-controls">
         <button className="slider-arrow" onClick={handlePrev}>{'<'}</button>
         <div className="movie-carousel">
-          {visibleMovies.map((movie) => {
-            const movieId = movie._id || movie.id;
-            return (
-              <div className="movie-card" key={movieId}>
-                <img
-                  src={movie.poster}
-                  alt={movie.title}
-                  className="movie-poster"
-                  onError={(e) => handleImageError(e, movie.title)}
-                />
-                <div className="movie-title">{movie.title}</div>
-                <div className="showtimes-section">
-                  <div className="showtimes-label">Showtimes</div>
-                  <div className="showtimes-list">
-                    {Array.isArray(movie.showtimes) && movie.showtimes.length > 0 ? (
-                      movie.showtimes.map((time, i) => (
-                        <button
-                          key={i}
-                          className={`showtime-btn ${selectedTime === time && selectedMovieId === movieId ? 'selected' : ''}`}
-                          onClick={() => handleTimeSelect(movieId, time)}
-                        >
-                          {time}
-                        </button>
-                      ))
-                    ) : (
-                      <span className="no-showtimes">No showtimes</span>
-                    )}
-                  </div>
-                  <button
-                    className="buy-ticket-btn"
-                    disabled={!selectedTime || selectedMovieId !== movieId}
-                    onClick={handleBuyTicket}
-                  >
-                    Buy ticket
-                  </button>
-                </div>
+          {visibleMovies.map((movie) => (
+            <div className="movie-card" key={movie._id}>
+              <img
+                src={movie.poster}
+                alt={movie.title}
+                className="movie-poster"
+                onError={(e) => handleImageError(e, movie.title)}
+              />
+              <div className="movie-title">{movie.title}</div>
+              <div className="movie-info">
+                <div className="movie-genre">{movie.genre}</div>
+                <div className="movie-duration">{movie.duration} min</div>
+                <div className="movie-screen-type">{movie.screenType}</div>
               </div>
-            );
-          })}
+              <div className="showtimes-section">
+                <div className="showtimes-label">Showtimes</div>
+                <div className="showtimes-list">
+                  {Array.isArray(movie.showtimes) && movie.showtimes.length > 0 ? (
+                    movie.showtimes.map((time, i) => (
+                      <button
+                        key={i}
+                        className={`showtime-btn ${selectedTime === time && selectedMovieId === movie._id ? 'selected' : ''}`}
+                        onClick={() => handleTimeSelect(movie._id, time)}
+                      >
+                        {time}
+                      </button>
+                    ))
+                  ) : (
+                    <span className="no-showtimes">No showtimes</span>
+                  )}
+                </div>
+                <button
+                  className="buy-ticket-btn"
+                  disabled={!selectedTime || selectedMovieId !== movie._id}
+                  onClick={handleBuyTicket}
+                >
+                  Buy ticket
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
         <button className="slider-arrow" onClick={handleNext}>{'>'}</button>
       </div>
