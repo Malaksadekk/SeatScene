@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
-
+import logo from '/Users/nermeenradwan/Downloads/SeatScene/client/src/assets/profile-placeholder.png';
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -124,7 +124,15 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
+       
       <div className="profile-card">
+        {/* Toggle buttons for bookings */}
+       
+        <img
+          src={logo}
+          alt="Logo"
+          className="profile-logo"
+        />
         <h2>User Profile</h2>
         {isEditing ? (
           <form onSubmit={handleSubmit} className="profile-form">
@@ -219,7 +227,12 @@ const UserProfile = () => {
             </div>
           </div>
         )}
+        
       </div>
+      <div className="booking-toggle-buttons">
+          <button className="booking-toggle active">Upcoming Bookings</button>
+          <button className="booking-toggle">Booking History</button>
+        </div>
     </div>
   );
 };

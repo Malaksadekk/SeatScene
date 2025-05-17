@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
 .form-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(30, 32, 36, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,32 +14,34 @@
 }
 
 .form-container {
-  background-color: #1a1a1a;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: #23242a;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   width: 100%;
-  max-width: 500px;
+  max-width: 420px;
   max-height: 90vh;
   overflow-y: auto;
-  border: 1px solid #333;
-  color: #ffffff;
+  border: 1px solid #393a42;
+  color: #e0e0e0;
 }
 
 .form-container h2 {
   margin-bottom: 1.5rem;
-  color: #e50914;
+  color: #fff;
   text-align: center;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #888;
+  color: #bdbdbd;
   font-weight: 500;
 }
 
@@ -45,12 +49,12 @@
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #333;
-  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #393a42;
+  border-radius: 6px;
   font-size: 1rem;
-  background-color: #2a2a2a;
-  color: #ffffff;
+  background-color: #2d2e36;
+  color: #e0e0e0;
   transition: all 0.3s;
 }
 
@@ -58,8 +62,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #e50914;
-  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
 }
 
 .form-group textarea {
@@ -71,10 +75,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: #2a2a2a;
+  background-color: #2d2e36;
   padding: 1rem;
-  border-radius: 4px;
-  border: 1px solid #333;
+  border-radius: 6px;
+  border: 1.5px solid #393a42;
 }
 
 .checkbox-group label {
@@ -82,13 +86,13 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: normal;
-  color: #ffffff;
+  color: #e0e0e0;
 }
 
 .checkbox-group input[type="checkbox"] {
   width: auto;
   margin: 0;
-  accent-color: #e50914;
+  accent-color: #4a90e2;
 }
 
 .form-buttons {
@@ -98,33 +102,34 @@
 }
 
 .form-buttons button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
+  font-weight: 600;
 }
 
 .form-buttons button[type="submit"] {
-  background-color: #e50914;
+  background-color: #4a90e2;
   color: white;
   flex: 1;
 }
 
 .form-buttons button[type="submit"]:hover {
-  background-color: #ff0f1a;
+  background-color: #357abd;
   transform: translateY(-1px);
 }
 
 .form-buttons button[type="submit"]:disabled {
-  background-color: #333;
+  background-color: #393a42;
   cursor: not-allowed;
   transform: none;
 }
 
 .cancel-button {
-  background-color: #333;
+  background-color: #393a42;
   color: white;
   flex: 1;
 }
@@ -135,11 +140,11 @@
 }
 
 .error-message {
-  background-color: rgba(229, 9, 20, 0.1);
-  color: #e50914;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
   padding: 0.75rem;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 1rem;
-  border: 1px solid #e50914;
+  border: 1px solid #dc3545;
   text-align: center;
 } 

@@ -4,7 +4,8 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/UserProfile/UserProfile';
 import Admin from './pages/AdminDashboard/Admin';
-
+import logo from './assets/ArtboVard 1@4x.png';
+import './App.css';
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -26,8 +27,11 @@ const AdminRoute = ({ children }) => {
 
 function App() {
   return (
+    
     <Router>
+      <img src={logo} alt="Logo" className="logo" />
       <Routes>
+        
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

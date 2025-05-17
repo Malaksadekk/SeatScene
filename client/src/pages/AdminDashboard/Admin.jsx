@@ -13,6 +13,7 @@ import { MdDashboardCustomize } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/ArtboVard 1@4x.png';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -114,7 +115,8 @@ const Admin = () => {
     <div className="admin-container">
       <div className="sidebar">
         <div className="sidebar-header">
-          <h2><RiAdminLine className="nav-icon" style={{ marginRight: '8px' }} /> Admin</h2>
+          {/* <img src={logo} alt="Logo" className="logo" /> */}
+          <h2 ><RiAdminLine className="nav-icon" style={{ marginRight: '8px' }} /> Admin</h2>
         </div>
         <nav className="sidebar-nav">
           <button 
@@ -124,35 +126,35 @@ const Admin = () => {
             <MdDashboardCustomize className="nav-icon" style={{ marginRight: '8px' }} />
             Dashboard
           </button>
-          <button 
+          <button style={{marginTop: '10px'}}
             className={`nav-item ${activeSection === 'users' ? 'active' : ''}`}
             onClick={() => setActiveSection('users')}
           >
             <FaRegUserCircle className="nav-icon" style={{ marginRight: '8px' }} />
             Users
           </button>
-          <button 
+          <button style={{marginTop: '10px'}}
             className={`nav-item ${activeSection === 'movies' ? 'active' : ''}`}
             onClick={() => setActiveSection('movies')}
           >
             <BiMovie className="nav-icon" style={{ marginRight: '8px' }} />
             Movies
           </button>
-          <button 
+          <button style={{marginTop: '10px'}}
             className={`nav-item ${activeSection === 'theaters' ? 'active' : ''}`}
             onClick={() => setActiveSection('theaters')}
           >
             <FaMasksTheater className="nav-icon" style={{ marginRight: '8px' }} />
             Theaters
           </button>
-          <button 
+          <button style={{marginTop: '10px'}}
             className={`nav-item ${activeSection === 'tickets' ? 'active' : ''}`}
             onClick={() => setActiveSection('tickets')}
           >
             <IoTicketSharp className="nav-icon" style={{ marginRight: '8px' }} />
             Tickets
           </button>
-          <button 
+          <button style={{marginTop: '10px'}}
             className="nav-item logout-button"
             onClick={handleLogout}
           >
@@ -274,8 +276,8 @@ const UserManagement = () => {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td>
-                  <button onClick={() => handleEdit(user)}>Edit</button>
-                  <button onClick={() => handleDelete(user._id)}>Delete</button>
+                  <button className="edit-button" onClick={() => handleEdit(user)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDelete(user._id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -445,8 +447,8 @@ const MovieManagement = () => {
                   </div>
                 </td>
                 <td>
-                  <button onClick={() => handleEdit(movie)}>Edit</button>
-                  <button onClick={() => handleDelete(movie._id)}>Delete</button>
+                  <button className="edit-button" onClick={() => handleEdit(movie)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDelete(movie._id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -571,8 +573,8 @@ const TheaterManagement = () => {
                   </div>
                 </td>
                 <td>
-                  <button onClick={() => handleEdit(theater)}>Edit</button>
-                  <button onClick={() => handleDelete(theater._id)}>Delete</button>
+                  <button className="edit-button" onClick={() => handleEdit(theater)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDelete(theater._id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -643,8 +645,8 @@ const TicketManagement = () => {
                 <td>{ticket.theaterId}</td>
                 <td>{new Date(ticket.date).toLocaleDateString()}</td>
                 <td>
-                  <button onClick={() => handleEdit(ticket._id)}>Edit</button>
-                  <button onClick={() => handleDelete(ticket._id)}>Delete</button>
+                  <button className="edit-button" onClick={() => handleEdit(ticket._id)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDelete(ticket._id)}>Delete</button>
                 </td>
               </tr>
             ))}

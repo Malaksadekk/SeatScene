@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaSignInAlt } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Auth.css';
+// #import './Auth.css';
+import './Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -138,7 +139,7 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="login-container">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -150,10 +151,10 @@ const Login = () => {
         draggable
         pauseOnHover
       />
-      <div className="auth-form-container">
+      <div className="login-form-container">
         <h2>Login to SeatScene</h2>
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <div className="input-with-icon">
@@ -182,24 +183,24 @@ const Login = () => {
               />
             </div>
           </div>
-          <button type="submit" disabled={loading} className={`auth-button ${loading ? 'loading' : ''}`}>
+          <button type="submit" disabled={loading} className={`login-button ${loading ? 'loading' : ''}`}>
             <FaSignInAlt className="button-icon" />
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="auth-switch">
+        <p className="login-switch">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
         
         {/* Debug information */}
-        {debugInfo && (
-          <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', backgroundColor: '#f5f5f5' }}>
+    {/*     {debugInfo && (
+           <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', backgroundColor: '#f5f5f5' }}>
             <h3 style={{ margin: '0 0 10px', fontSize: '16px' }}>Debug Info</h3>
             <pre style={{ whiteSpace: 'pre-wrap', overflow: 'auto', maxHeight: '200px', fontSize: '12px' }}>
               {JSON.stringify(debugInfo, null, 2)}
             </pre>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Auth.css';
+import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -87,11 +88,11 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-form-container">
+    <div className="register-container">
+      <div className="register-form-container">
         <h2>Create an Account</h2>
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="register-form">
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
@@ -143,11 +144,11 @@ const Register = () => {
               placeholder="Confirm your password"
             />
           </div>
-          <button type="submit" disabled={loading} className="auth-button">
+          <button type="submit" disabled={loading} className="register-button">
             {loading ? 'Creating Account...' : 'Register'}
           </button>
         </form>
-        <p className="auth-switch">
+        <p className="register-switch">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
       </div>

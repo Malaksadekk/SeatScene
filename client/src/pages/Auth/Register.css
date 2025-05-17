@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+/* Reset default margins and ensure full height */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #1e2127 0%, #282c34 100%);
+  overflow: hidden;
+}
+
+/* Main container with centered content */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Form container styling */
+.register-form-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Form heading with custom font */
+.register-form-container h2 {
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1f2025;
+  margin: 0 0 24px;
+}
+
+/* Form layout */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Input group styling */
+.form-group {
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 15px;
+  background: #f8f9fb;
+  color: #1f2025;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #28a745;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+}
+
+/* Register button styling */
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-button::after {
+  content: '➜';
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.register-button:hover {
+  background-color: #1f8b38;
+  transform: translateY(-1px);
+}
+
+.register-button:active {
+  transform: translateY(0);
+}
+
+/* Sign-in link section */
+.register-switch {
+  text-align: center;
+  margin-top: 16px;
+  color: #555;
+  font-size: 14px;
+}
+
+.register-switch a {
+  color: #28a745;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.register-switch a:hover {
+  color: #1f8b38;
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #ffe6e8;
+  color: #721c24;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 15px;
+  }
+
+  .register-form-container {
+    max-width: 95vw;
+    padding: 20px;
+  }
+
+  .register-form-container h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form-container {
+    padding: 16px;
+  }
+
+  .register-form-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .register-button {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
