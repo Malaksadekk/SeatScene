@@ -1,6 +1,7 @@
 const { verifyToken, extractToken } = require('../utils/jwtHelper');
 
-module.exports = async function(req, res, next) {
+// Authentication middleware
+const authenticate = async function(req, res, next) {
   try {
     // Get token from header
     const token = extractToken(req);
@@ -16,4 +17,14 @@ module.exports = async function(req, res, next) {
     console.error('Auth middleware error:', error);
     res.status(401).json({ message: 'Token is not valid' });
   }
-}; 
+};
+
+// isAdmin middleware
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    return next();
+  }
+  return res.status(403).json({ message: 'Access denied: Admins only' });
+};
+
+module.exports = { authenticate, isAdmin }; 

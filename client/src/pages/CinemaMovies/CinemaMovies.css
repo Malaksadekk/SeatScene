@@ -1,37 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .cinema-container {
-  position: absolute;
-  top: 64px;
-  left: 0;
   width: 100vw;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
+  margin-top: 0;
+  padding-top: 100px;
   background-color: #363942;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0;
-  margin: 0;
   box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 900;
+  margin: 0;
+  padding: 0;
 }
 
 .cinema-title {
   font-family: 'Berkshire Swash', cursive;
   color: #fff;
   font-size: 2.8rem;
-  margin-top: 24px;
-  margin-bottom: 12px;
+  margin-top: 0px;
+  margin-bottom: 20px;
   text-align: center;
   position: relative;
 }
 
-.cinema-subtitle {
+.cinema-location {
   color: #b19cd9;
-  font-size: 1rem;
+  font-size: 1.5rem;
   text-align: center;
   margin-top: -10px;
 }
@@ -77,13 +82,12 @@
   font-family: 'Berkshire Swash', cursive;
   color: #fff;
   font-size: 1.3rem;
-  margin: 10px 0 6px 0;
   text-align: center;
   direction: rtl;
 }
 
 .showtimes-section {
-  margin: 18px 0 10px 0;
+ 
   width: 100%;
   text-align: center;
   border: none; /* Remove borders */
@@ -128,7 +132,7 @@
 }
 
 .buy-ticket-btn {
-  margin-top: 12px;
+  margin: 12px;
   background: #666;
   color: #fff;
   border: none; /* Already set, ensuring no borders */
@@ -206,12 +210,13 @@
 }
 
 .movie-info {
-  display: flex;
+  display: inline;
   flex-direction: column;
   gap: 4px;
-  margin: 8px 0;
   color: #b19cd9;
   font-size: 0.9rem;
+  text-align: center;
+
 }
 
 .movie-genre {
@@ -225,6 +230,7 @@
 .movie-screen-type {
   color: #ffd600;
 }
+
 
 @media (max-width: 600px) {
   .cinema-title { font-size: 1.5rem; }

@@ -1,145 +1,242 @@
-.cinema-seating-container {
-  background: #23252e;
-  color: #fff;
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 32px 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 32px #000a;
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #363942;
+  background-attachment: fixed; /* background stays fixed */
+  overflow-x: hidden; /* Prevent horizontal scroll, but allow vertical */
+  font-family: 'Berkshire Swash', cursive;
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 64px;
+  z-index: 1000;
+  background: #222;
+}
+
+.main-content {
+  margin-top: 64px; /* To avoid being hidden under the fixed header */
+  width: 100vw;
+  min-height: calc(100vh - 64px);
+  /* No overflow: hidden here! */
+}
+
+/* Override for screen label */
+.screen {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Override for seat numbers and row labels */
+.seat,
+.row-label {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.seating-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  color: white;
+  min-height: 100vh;
+}
+
+.seating-title {
   text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #fff;
 }
-.select-seats-title {
-  font-family: 'Creepster', cursive;
-  font-size: 2.2rem;
-  margin-bottom: 0.2em;
+
+.movie-details {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-.movie-title {
+
+.movie-info {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.showtime-info {
   font-size: 1.2rem;
-  margin-bottom: 0.2em;
+  color: #ccc;
 }
-.showtime {
-  color: #b97aff;
-  margin-bottom: 1.2em;
+
+/* Screen */
+.screen-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
-.screen-label {
-  background: #fff;
-  color: #23252e;
-  border-radius: 8px 8px 16px 16px;
-  width: 70%;
-  margin: 0 auto 1.5em auto;
-  padding: 8px 0;
+
+.screen {
+  width: 80%;
+  height: 40px;
+  background: linear-gradient(to bottom, #fff, #ccc);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
   font-weight: bold;
-  box-shadow: 0 2px 12px #0005;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
-.seats-area {
-  margin-bottom: 1.5em;
-}
-.seats-grid {
+
+/* Seating chart */
+.seating-chart {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
+
 .seat-row {
   display: flex;
   align-items: center;
-  gap: 0.3em;
+  gap: 0.5rem;
 }
+
 .row-label {
-  font-weight: bold;
-  color: #ffd600;
-  margin: 0 0.5em;
-  min-width: 1.2em;
+  color: #ccc;
+  width: 20px;
+  text-align: center;
 }
-.seat-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: none;
-  margin: 0 2px;
-  font-weight: bold;
-  font-size: 1rem;
+
+.seat {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
-  box-shadow: 0 2px 6px #0003;
+  transition: all 0.2s;
+  background-color: #444;
+  color: white;
 }
-.seat-btn:active {
-  transform: scale(0.95);
+
+.seat.available {
+  background-color: #666;
 }
-.regular-seat {
-  background: #3b7cff;
-  color: #fff;
+
+.seat.available:hover {
+  background-color: #888;
 }
-.vip-seat {
-  background: #ffd600;
-  color: #23252e;
+
+.seat.selected {
+  background-color: #7b1fa2;
 }
-.selected-seat {
-  background: #b97aff;
-  color: #fff;
-  border: 2px solid #fff;
+
+.seat.vip {
+  background-color: #ffd700;
+  color: #333;
 }
-.unavailable-seat {
-  background: #444a5a;
-  color: #888;
+
+.seat.vip.selected {
+  background-color: #7b1fa2;
+  color: white;
+}
+
+.seat.unavailable {
+  background-color: #333;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
 }
-.legend {
+
+/* Legend */
+.seat-legend {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 1.2em;
-  margin: 1.2em 0 0.5em 0;
-  font-size: 0.95em;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
+
 .legend-item {
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  margin-right: 0.3em;
-  vertical-align: middle;
-}
-.legend-item.regular-seat { background: #3b7cff; }
-.legend-item.vip-seat { background: #ffd600; }
-.legend-item.selected-seat { background: #b97aff; }
-.legend-item.unavailable-seat { background: #444a5a; }
-.selection-summary {
-  margin: 1.2em 0 0.5em 0;
-  font-size: 1.1em;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #23252e;
-  padding: 0.7em 1em;
-  border-radius: 8px;
-  border: 1px solid #333;
+  gap: 0.5rem;
 }
-.actions {
+
+/* Selection summary */
+.selection-summary {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.price-summary {
+  font-size: 1.2rem;
+  color: #7b1fa2;
+  font-weight: bold;
+}
+
+/* Action buttons */
+.action-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.2em;
-  margin-top: 1.2em;
+  gap: 1rem;
 }
-.back-btn, .cancel-btn, .confirm-btn {
-  background: #444a5a;
-  color: #fff;
+
+.back-button,
+.cancel-button,
+.confirm-button {
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 8px;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-weight: bold;
+  transition: all 0.2s;
 }
-.back-btn:hover, .cancel-btn:hover {
-  background: #3b7cff;
+
+.back-button {
+  background-color: #666;
+  color: white;
 }
-.confirm-btn {
-  background: #b97aff;
-  color: #fff;
+
+.back-button:hover {
+  background-color: #888;
 }
-.confirm-btn:disabled {
-  background: #888;
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.confirm-button {
+  background-color: #7b1fa2;
+  color: white;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background-color: #9c27b0;
+}
+
+.confirm-button:disabled {
+  background-color: #666;
   cursor: not-allowed;
+}
+
+.loading-message,
+.error-message,
+.no-seats-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.error-message {
+  color: #dc3545;
 }

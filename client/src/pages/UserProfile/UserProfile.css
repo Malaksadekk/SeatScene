@@ -1,26 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+.body{
+  background-color: #282c34;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
 .profile-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background-color: #0f0f0f;
   padding: 2rem;
+  background-color: #282c34;
+  width: 100%;
+  gap: 2.5rem;
+}
+.profile-left {
+  background: #232334;
+  border-radius: 18px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 340px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  margin-top: 50px;
+}
+.profile-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid #a259e6;
+  margin-bottom: 2rem;
+  background: #181828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-name {
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.profile-email, .profile-phone, .profile-member {
+  color: #bdbdbd;
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+.profile-member {
+  margin-bottom: 2rem;
+}
+.profile-action-btn {
+  width: 100%;
+  padding: 1rem 0;
+  background: #44454f;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  font-family: 'Berkshire Swash', cursive;
+  font-weight: 600;
+  margin-bottom: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
+
+.logout-btn {
+  width: 100%;
+  padding: 1rem 0;
+  background: #44454f;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s;
+}
+.profile-action-btn:hover,
+.logout-btn:hover
+ {
+  background: #7b1fa2;
+}
+
+.profile-right {
+  flex: 1;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 .profile-card {
-  background-color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.95);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 15px;
   width: 100%;
   max-width: 600px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  border: 1px solid #333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  margin-top: 100px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
 }
 
 .profile-card h2 {
-  color: #e50914;
+  color: #1a1a1a;
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 2rem;
+  font-family: 'Berkshire Swash', cursive;
 }
 
 .profile-info {
@@ -36,12 +141,13 @@
 }
 
 .info-group label {
-  color: #888;
+  color: #666;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .info-group p {
-  color: #fff;
+  color: #333;
   font-size: 1.1rem;
   margin: 0;
 }
@@ -56,25 +162,29 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
 }
 
 .form-group label {
-  color: #fff;
+  color: #333;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .form-group input {
   padding: 0.75rem;
-  border: 1px solid #333;
-  border-radius: 4px;
-  background-color: #2a2a2a;
-  color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #e50914;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .profile-buttons {
@@ -87,47 +197,41 @@
   flex: 1;
   padding: 0.75rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .save-button {
-  background-color: #e50914;
+  background-color: #4a90e2;
   color: white;
 }
 
 .save-button:hover {
-  background-color: #f40612;
+  background-color: #357abd;
+  transform: translateY(-2px);
 }
 
 .edit-button {
-  background-color: #e50914;
+  background-color: #4a90e2;
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #f40612;
+  background-color: #357abd;
+  transform: translateY(-2px);
 }
 
 .cancel-button {
-  background-color: #333;
+  background-color: #666;
   color: white;
 }
 
 .cancel-button:hover {
-  background-color: #444;
-}
-
-.logout-button {
-  background-color: #333;
-  color: white;
-}
-
-.logout-button:hover {
-  background-color: #444;
+  background-color: #555;
+  transform: translateY(-2px);
 }
 
 .loading {
@@ -135,16 +239,122 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  color: #888;
+  color: #666;
   font-size: 1.2rem;
 }
 
 .error-message {
-  background-color: rgba(229, 9, 20, 0.1);
-  color: #e50914;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
   padding: 0.75rem;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 1rem;
-  border: 1px solid #e50914;
+  border: 1px solid #dc3545;
   font-size: 0.9rem;
 }
+
+/* Toast Container Styles */
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.Toastify__toast--success {
+  background: #28a745;
+}
+
+.Toastify__toast--error {
+  background: #dc3545;
+}
+
+.Toastify__toast--info {
+  background: #4a90e2;
+}
+
+.Toastify__toast-body {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-card {
+    padding: 1.5rem;
+  }
+
+  .profile-card h2 {
+    font-size: 1.75rem;
+  }
+
+  .profile-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .profile-right {
+    max-width: 100vw;
+    width: 100%;
+  }
+  .profile-left {
+    min-width: 90vw;
+    max-width: 95vw;
+  }
+}
+
+.booking-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 24px;
+  border-bottom: 3px solid #444;
+  width: 100%;
+  max-width: 100%;
+}
+
+.booking-toggle {
+  background: none;
+  border: none;
+  outline: none;
+  color: #bdbdbd;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 12px 28px 10px 28px;
+  cursor: pointer;
+  border-radius: 0;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s, background 0.2s;
+  margin-top: 100px;
+}
+
+.booking-toggle:hover,
+.booking-toggle.active {
+  color: #a259e6;
+  border-bottom: 3px solid #a259e6;
+  background: none;
+}
+
+.profile-page-logo {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  z-index: 10;
+}
+

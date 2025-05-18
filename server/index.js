@@ -21,7 +21,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true
 }));
 app.use(express.json());
@@ -61,6 +61,7 @@ const adminRoutes = require('./routes/admin');
 const movieRoutes = require('./routes/movie');
 const seatsRoutes = require('./routes/seats');
 const bookingRoutes = require('./routes/booking');
+const theaterRoutes = require('./routes/theater');
 
 // Log available routes
 console.log('Available routes:');
@@ -71,6 +72,7 @@ console.log('- PUT /api/users/profile');
 console.log('- GET /api/movies');
 console.log('- GET /api/seats');
 console.log('- POST /api/booking');
+console.log('- GET /api/theaters');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -79,6 +81,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/seats', seatsRoutes);
 app.use('/api/booking', bookingRoutes);
+app.use('/api/theaters', theaterRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -1,0 +1,174 @@
+.theater-container {
+  min-height: 100vh;
+  background-color: #363942;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theater-title {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Berkshire Swash', cursive;
+}
+
+.theater-subtitle {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.theater-slider-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.theater-slider-arrow {
+  background: #7b1fa2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.theater-slider-arrow:hover {
+  background: #9c27b0;
+}
+
+.theater-show-carousel {
+  display: flex;
+  gap: 2rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.theater-show-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.theater-show-poster {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.theater-show-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.theater-show-info {
+  display: flex;
+  gap: 1rem;
+  color: #666;
+}
+
+.theater-showtimes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.theater-showtimes-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.theater-showtimes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.theater-showtime-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #7b1fa2;
+  border-radius: 4px;
+  background: white;
+  color: #7b1fa2;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theater-showtime-btn:hover {
+  background: #7b1fa2;
+  color: white;
+}
+
+.theater-showtime-btn.selected {
+  background: #7b1fa2;
+  color: white;
+}
+
+.theater-buy-ticket-btn {
+  padding: 0.75rem;
+  background: #7b1fa2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.theater-buy-ticket-btn:hover:not(:disabled) {
+  background: #9c27b0;
+}
+
+.theater-buy-ticket-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.theater-slider-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.theater-slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.theater-slider-dot.active {
+  background: #7b1fa2;
+}
+
+.theater-shows-loading,
+.theater-shows-error {
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.theater-no-showtimes {
+  color: #666;
+  font-style: italic;
+}

@@ -7,8 +7,8 @@ import './Auth.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: 'admin@seatscene.com',
-    password: 'admin123'
+    email: '',
+    password: ''
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -118,8 +118,8 @@ const Login = () => {
         toast.info('Redirecting to admin dashboard...');
         setTimeout(() => navigate('/admin'), 1500);
       } else {
-        toast.info('Redirecting to movies...');
-        setTimeout(() => navigate('/movies'), 1500);
+        toast.info('Redirecting to venue selection...');
+        setTimeout(() => navigate('/venue-selection'), 1500);
       }
 
     } catch (error) {
@@ -153,7 +153,7 @@ const Login = () => {
       <div className="auth-form-container">
         <h2>Login to SeatScene</h2>
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <div className="input-with-icon">
@@ -165,6 +165,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                autoComplete="off"
               />
             </div>
           </div>
@@ -179,6 +180,7 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                autoComplete="off"
               />
             </div>
           </div>
@@ -190,16 +192,6 @@ const Login = () => {
         <p className="auth-switch">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
-        
-        {/* Debug information */}
-        {debugInfo && (
-          <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', backgroundColor: '#f5f5f5' }}>
-            <h3 style={{ margin: '0 0 10px', fontSize: '16px' }}>Debug Info</h3>
-            <pre style={{ whiteSpace: 'pre-wrap', overflow: 'auto', maxHeight: '200px', fontSize: '12px' }}>
-              {JSON.stringify(debugInfo, null, 2)}
-            </pre>
-          </div>
-        )}
       </div>
     </div>
   );

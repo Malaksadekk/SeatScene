@@ -22,9 +22,18 @@ const NavHeader = () => {
     }
   };
 
+  const handleLogoClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/venue-selection');
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <nav className="nav-header">
-      <div className="logo-section">
+      <div className="logo-section" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
         <img src={logoImg} alt="Seat Scene Logo" className="logo-img" />
       </div>
       {!hideProfileBtn && (

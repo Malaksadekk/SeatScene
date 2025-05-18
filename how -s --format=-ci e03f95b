@@ -1,0 +1,11 @@
+* [33m7cb5ea5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mvite-setup[m[33m)[m Restore Register page to pre-pull request state
+* [33me03f95b[m index on vite-setup: 906f658 feat: integrate MongoDB for movie data - Update CinemaMovies component to fetch from MongoDB - Add movie info display (genre, duration, screen type) - Update movie data model and controllers - Add seat layout and booking functionality
+* [33m906f658[m feat: integrate MongoDB for movie data - Update CinemaMovies component to fetch from MongoDB - Add movie info display (genre, duration, screen type) - Update movie data model and controllers - Add seat layout and booking functionality
+* [33m430a2e7[m Update components and server files
+[31m|[m * [33m9785971[m[33m ([m[1;31morigin/vite-setup[m[33m)[m Update profile, auth, and admin styles; refactor login/register; UI improvements
+[31m|[m[31m/[m  
+* [33m69f3d1a[m feat: Add toast notifications and fix login authentication
+* [33me24641e[m Update client folders
+* [33mdd1b744[m Initial commit: Project setup with Vite React frontend
+* [33me1ac7ff[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m feat: add server project structure with empty files
+* [33ma44e128[m Initial commit

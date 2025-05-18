@@ -126,79 +126,55 @@ const AddTheaterForm = ({ onClose, onSuccess }) => {
           <div className="form-group">
             <label>Screens</label>
             {formData.screens.map((screen, index) => (
-              <div key={index} className="screen-input">
+              <div key={index} className="screen-input-group">
                 <input
                   type="number"
-                  value={screen.number}
-                  onChange={(e) => handleScreenChange(index, 'number', e.target.value)}
                   placeholder="Screen Number"
+                  value={screen.number}
+                  onChange={e => handleScreenChange(index, 'number', e.target.value)}
                   required
                 />
                 <input
                   type="number"
+                  placeholder="Seats"
                   value={screen.seats}
-                  onChange={(e) => handleScreenChange(index, 'seats', e.target.value)}
-                  placeholder="Number of Seats"
+                  onChange={e => handleScreenChange(index, 'seats', e.target.value)}
                   required
                 />
-                {index > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveScreen(index)}
-                    className="remove-screen"
-                  >
-                    ×
+                {formData.screens.length > 1 && (
+                  <button type="button" onClick={() => handleRemoveScreen(index)}>
+                    Remove
                   </button>
                 )}
               </div>
             ))}
-            <button
-              type="button"
-              onClick={handleAddScreen}
-              className="add-screen"
-            >
+            <button type="button" onClick={handleAddScreen} className="add-screen-btn">
               Add Screen
             </button>
           </div>
 
           <div className="form-group">
             <label>Amenities</label>
-            <div className="checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  value="Dolby Atmos"
-                  checked={formData.amenities.includes('Dolby Atmos')}
-                  onChange={handleAmenityChange}
-                />
-                Dolby Atmos
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  value="Wheelchair Access"
-                  checked={formData.amenities.includes('Wheelchair Access')}
-                  onChange={handleAmenityChange}
-                />
-                Wheelchair Access
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  value="Food Service"
-                  checked={formData.amenities.includes('Food Service')}
-                  onChange={handleAmenityChange}
-                />
-                Food Service
-              </label>
+            <div className="amenities-list">
+              {['VIP Seating', 'Dolby Atmos', '3D', 'IMAX'].map((amenity, idx) => (
+                <label key={idx}>
+                  <input
+                    type="checkbox"
+                    value={amenity}
+                    checked={formData.amenities.includes(amenity)}
+                    onChange={handleAmenityChange}
+                  />
+                  {amenity}
+                </label>
+              ))}
             </div>
           </div>
 
-          <div className="form-buttons">
+          <div className="form-actions">
             <button type="submit" disabled={loading}>
               {loading ? 'Adding...' : 'Add Theater'}
             </button>
-            <button type="button" onClick={onClose} className="cancel-button">
+            <button type="button" onClick={onClose} className="cancel-btn">
               Cancel
             </button>
           </div>

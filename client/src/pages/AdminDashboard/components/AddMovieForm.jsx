@@ -8,7 +8,7 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     duration: '',
     genre: '',
     releaseDate: '',
-    posterUrl: '',
+    posterImage: null,
     capacity: '',
     screenType: '2D',
     amenities: [],
@@ -20,11 +20,18 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
   const [newShowtime, setNewShowtime] = useState('');
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: files[0]
+      }));
+    } else {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    }
   };
 
   const handleAddAmenity = () => {
@@ -50,12 +57,20 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     setError(null);
 
     try {
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'amenities' || key === 'showtimes') {
+          formDataToSend.append(key, JSON.stringify(formData[key]));
+        } else if (key === 'posterImage' && formData[key]) {
+          formDataToSend.append('posterImage', formData[key]);
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+
       const response = await fetch('/api/admin/movies', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       if (!response.ok) {
@@ -138,14 +153,24 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="posterUrl">Poster URL</label>
+            <label htmlFor="posterImage">Movie Poster</label>
             <input
-              type="url"
-              id="posterUrl"
-              name="posterUrl"
-              value={formData.posterUrl}
+              type="file"
+              id="posterImage"
+              name="posterImage"
+              accept="image/*"
               onChange={handleChange}
+              required
             />
+            {formData.posterImage && (
+              <div className="image-preview">
+                <img 
+                  src={URL.createObjectURL(formData.posterImage)} 
+                  alt="Poster preview" 
+                  style={{ maxWidth: '200px', marginTop: '10px' }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="form-group">

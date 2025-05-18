@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
-
+import logo from '../../assets/profile-placeholder.png';
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,6 +14,8 @@ const UserProfile = () => {
     newPassword: '',
     confirmPassword: ''
   });
+  const [activeButton, setActiveButton] = useState(null); // 'book' or 'logout'
+  const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming' or 'history'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,101 +126,53 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
-      <div className="profile-card">
-        <h2>User Profile</h2>
-        {isEditing ? (
-          <form onSubmit={handleSubmit} className="profile-form">
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="currentPassword">Current Password</label>
-              <input
-                type="password"
-                id="currentPassword"
-                name="currentPassword"
-                value={formData.currentPassword}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="newPassword">New Password</label>
-              <input
-                type="password"
-                id="newPassword"
-                name="newPassword"
-                value={formData.newPassword}
-                onChange={handleChange}
-                minLength="6"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm New Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                minLength="6"
-              />
-            </div>
-            <div className="profile-buttons">
-              <button type="submit" disabled={loading} className="save-button">
-                {loading ? 'Saving...' : 'Save Changes'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsEditing(false)}
-                className="cancel-button"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="profile-info">
-            <div className="info-group">
-              <label>Name:</label>
-              <p>{user.name}</p>
-            </div>
-            <div className="info-group">
-              <label>Email:</label>
-              <p>{user.email}</p>
-            </div>
-            <div className="info-group">
-              <label>Member Since:</label>
-              <p>{new Date(user.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div className="profile-buttons">
-              <button onClick={() => setIsEditing(true)} className="edit-button">
-                Edit Profile
-              </button>
-              <button onClick={handleLogout} className="logout-button">
-                Logout
-              </button>
-            </div>
-          </div>
-        )}
+      {/* Left column: User info and actions */}
+      <div className="profile-left">
+        <div className="profile-logo">
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+          />
+        </div>
+        <div className="profile-name">{user.name}</div>
+        <div className="profile-email">{user.email}</div>
+        <div className="profile-member">Member since: {new Date(user.createdAt).toLocaleDateString()}</div>
+        <button
+          className={`profile-action-btn${activeButton === 'book' ? ' active' : ''}`}
+          onClick={() => { setActiveButton('book'); navigate('/venue-selection'); }}
+        >
+          Book New Ticket
+        </button>
+        <button
+          className={`logout-btn${activeButton === 'logout' ? ' active' : ''}`}
+          onClick={() => { setActiveButton('logout'); handleLogout(); }}
+        >
+          Logout
+        </button>
+      </div>
+      {/* Right column: Bookings and tabs */}
+      <div className="profile-right">
+        {/* Toggle buttons for bookings */}
+        <div className="booking-toggle-buttons">
+          <button
+            className={`booking-toggle${activeTab === 'upcoming' ? ' active' : ''}`}
+            onClick={() => setActiveTab('upcoming')}
+          >
+            Upcoming Bookings
+          </button>
+          <button
+            className={`booking-toggle${activeTab === 'history' ? ' active' : ''}`}
+            onClick={() => setActiveTab('history')}
+          >
+            Booking History
+          </button>
+        </div>
+        {/* Bookings content placeholder (replace with your actual bookings rendering) */}
+        <div style={{marginTop: '2rem', color: '#fff', fontSize: '1.2rem', textAlign: 'center'}}>
+          {/* TODO: Render bookings here */}
+          Your bookings will appear here.
+        </div>
       </div>
     </div>
   );

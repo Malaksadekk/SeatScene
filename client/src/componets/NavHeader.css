@@ -1,21 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 
 .nav-header {
-  position: fixed;
-  top: 0;
-  left: 0;
+  
   width: 100vw;
   z-index: 1000;
-  display: flex;
+ display:flex;
   justify-content: space-between;
   align-items: center;
   background-color: #363942;
-  padding: 10px 32px;
+  padding: 5px 32px;
   font-family: 'Berkshire Swash', cursive;
   height: 64px;
   min-height: 64px;
   max-height: 64px;
   box-sizing: border-box;
+  padding-top: 80px;
 }
 
 body, #root {
@@ -25,14 +24,20 @@ body, #root {
 
 .logo-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
+  padding-top: 0px;
+  margin-top: 0;
 }
 
 .logo-img {
-  height: 100px;
+  height: 0px;
   width: auto;
   object-fit: contain;
+  margin-top: 0;
+  padding-top: 0;
+  vertical-align: top;
+
 }
 
 .profile-btn {
@@ -77,4 +82,17 @@ body, #root {
 .profile-btn span, .profile-btn {
   position: relative;
   z-index: 2;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.nav-header .logo-img {
+  height: 100px;
+  padding: 0 !important;
+  margin: 0 !important;
 }

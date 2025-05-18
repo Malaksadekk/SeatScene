@@ -1,0 +1,32 @@
+.venue-selection-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #363942;
+  gap: 2rem;
+}
+
+.venue-btn {
+  font-size: 2.5rem;
+  padding: 2rem 6rem;
+  margin: 1rem 0;
+  border-radius: 12px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-family: 'Berkshire Swash', cursive;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 600px;
+  background: #666;
+
+}
+
+.venue-btn:hover {
+  background: #7b1fa2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}

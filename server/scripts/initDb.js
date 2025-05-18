@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Movie = require('../models/SeatLayout');
-const Seat = require('../models/Seat');
 require('dotenv').config();
 
 async function initializeDatabase() {
@@ -21,53 +20,79 @@ async function initializeDatabase() {
     // Clear existing data
     console.log('Clearing existing data...');
     await Movie.deleteMany({});
-    await Seat.deleteMany({});
     console.log('Existing data cleared');
 
-    // Create sample seats
-    console.log('Creating seats...');
-    const seats = [];
-    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    
-    for (const row of rows) {
-      for (let number = 1; number <= 12; number++) {
-        const type = ['A', 'B'].includes(row) ? 'vip' : 'regular';
-        const seat = await Seat.create({
-          row,
-          number,
-          type,
-          available: true
-        });
-        seats.push(seat._id);
-      }
-    }
-    console.log(`${seats.length} seats created`);
-
-    // Create sample movies
-    console.log('Creating sample movies...');
     const movies = [
       {
-        title: 'The Matrix',
+        movieId: "68273ef28f1803cc8b2aac55",
+        title: "Thunderbolts",
         seating: {
-          vipPrice: 250,
+          vipPrice: 300,
           regularPrice: 150,
-          vipRows: ['A', 'B'],
+          vipRows: ["A", "B"],
           rows: 8,
           seatsPerRow: 12,
-          unavailableSeats: ['A3', 'A4', 'B5', 'C2'],
-          seats: seats
+          unavailableseats: ["A1", "A2", "B3", "C4", "D5", "E6", "F7", "G8"]
         }
       },
       {
-        title: 'Inception',
+        movieId: "682752a53461011dc48662a8",
+        title: "Until Dawn",
         seating: {
-          vipPrice: 250,
+          vipPrice: 300,
           regularPrice: 150,
-          vipRows: ['A', 'B'],
+          vipRows: ["A", "B"],
           rows: 8,
           seatsPerRow: 12,
-          unavailableSeats: ['A1', 'B2', 'C3'],
-          seats: seats
+          unavailableseats: []
+        }
+      },
+      {
+        movieId: "682754973461011dc48662b0",
+        title: "The Accountant 2",
+        seating: {
+          vipPrice: 300,
+          regularPrice: 150,
+          vipRows: ["A", "B"],
+          rows: 8,
+          seatsPerRow: 12,
+          unavailableseats: []
+        }
+      },
+      {
+        movieId: "682755633461011dc48662ba",
+        title: "Al-Hana Elli Ana Fih",
+        seating: {
+          vipPrice: 300,
+          regularPrice: 150,
+          vipRows: ["A", "B"],
+          rows: 8,
+          seatsPerRow: 12,
+          unavailableseats: []
+        }
+      },
+      {
+        movieId: "6827535d3461011dc48662ac",
+        title: "Flight 404",
+        seating: {
+          vipPrice: 300,
+          regularPrice: 150,
+          vipRows: ["A", "B"],
+          rows: 8,
+          seatsPerRow: 12,
+          unavailableseats: []
+        }
+      },
+      {
+        movieId: "68273ef28f1803cc8b2aac57",
+        title: "Siko Siko",
+        seating: {
+          vipPrice: 300,
+          regularPrice: 150,
+          vipRows: ["A", "B"],
+          rows: 8,
+          seatsPerRow: 12,
+          unavailableseats: []
         }
       }
     ];

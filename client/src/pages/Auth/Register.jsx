@@ -72,12 +72,8 @@ const Register = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Redirect based on user role
-      if (data.user.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/profile');
-      }
+      // Navigate to login page after successful registration
+      navigate('/login');
     } catch (error) {
       console.error('Registration error:', error);
       setError(error.message || 'An error occurred during registration. Please try again.');

@@ -2,6 +2,8 @@ const User = require('../models/User');
 const Movie = require('../models/Movie');
 const Theater = require('../models/Theater');
 const Booking = require('../models/Booking');
+const fs = require('fs').promises;
+const path = require('path');
 
 // Get dashboard statistics
 exports.getStats = async (req, res) => {
@@ -76,21 +78,34 @@ exports.getMovies = async (req, res) => {
 
 exports.createMovie = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Movie poster is required' });
+    }
+
     const movie = new Movie({
       title: req.body.title,
       description: req.body.description,
       duration: req.body.duration,
       genre: req.body.genre,
       releaseDate: req.body.releaseDate,
-      posterUrl: req.body.posterUrl,
+      posterPath: req.file.filename, // Store the filename
       capacity: req.body.capacity,
       screenType: req.body.screenType,
-      amenities: req.body.amenities || [],
-      showtimes: req.body.showtimes || []
+      amenities: JSON.parse(req.body.amenities || '[]'),
+      showtimes: JSON.parse(req.body.showtimes || '[]')
     });
+
     await movie.save();
     res.status(201).json(movie);
   } catch (error) {
+    // If there's an error, delete the uploaded file
+    if (req.file) {
+      try {
+        await fs.unlink(req.file.path);
+      } catch (unlinkError) {
+        console.error('Error deleting file:', unlinkError);
+      }
+    }
     console.error('Error in createMovie:', error);
     res.status(500).json({ message: error.message });
   }
@@ -100,24 +115,46 @@ exports.updateMovie = async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
     if (!movie) {
+      // If there's a new file uploaded but movie not found, delete the file
+      if (req.file) {
+        await fs.unlink(req.file.path);
+      }
       return res.status(404).json({ message: 'Movie not found' });
     }
 
-    // Update all fields
+    // If there's a new file uploaded, delete the old one
+    if (req.file) {
+      try {
+        const oldFilePath = path.join(__dirname, '..', 'uploads', 'posters', movie.posterPath);
+        await fs.unlink(oldFilePath);
+      } catch (unlinkError) {
+        console.error('Error deleting old file:', unlinkError);
+      }
+      movie.posterPath = req.file.filename;
+    }
+
+    // Update other fields
     movie.title = req.body.title || movie.title;
     movie.description = req.body.description || movie.description;
     movie.duration = req.body.duration || movie.duration;
     movie.genre = req.body.genre || movie.genre;
     movie.releaseDate = req.body.releaseDate || movie.releaseDate;
-    movie.posterUrl = req.body.posterUrl || movie.posterUrl;
     movie.capacity = req.body.capacity || movie.capacity;
     movie.screenType = req.body.screenType || movie.screenType;
-    movie.amenities = req.body.amenities || movie.amenities;
-    movie.showtimes = req.body.showtimes || movie.showtimes;
+    movie.amenities = JSON.parse(req.body.amenities || JSON.stringify(movie.amenities));
+    movie.showtimes = JSON.parse(req.body.showtimes || JSON.stringify(movie.showtimes));
 
     const updatedMovie = await movie.save();
     res.json(updatedMovie);
   } catch (error) {
+    // If there's an error and a new file was uploaded, delete it
+    if (req.file) {
+      try {
+        await fs.unlink(req.file.path);
+      } catch (unlinkError) {
+        console.error('Error deleting file:', unlinkError);
+      }
+    }
     console.error('Error in updateMovie:', error);
     res.status(500).json({ message: error.message });
   }
@@ -125,9 +162,23 @@ exports.updateMovie = async (req, res) => {
 
 exports.deleteMovie = async (req, res) => {
   try {
-    await Movie.findByIdAndDelete(req.params.id);
+    const movie = await Movie.findById(req.params.id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    // Delete the poster file
+    try {
+      const filePath = path.join(__dirname, '..', 'uploads', 'posters', movie.posterPath);
+      await fs.unlink(filePath);
+    } catch (unlinkError) {
+      console.error('Error deleting poster file:', unlinkError);
+    }
+
+    await movie.deleteOne();
     res.json({ message: 'Movie deleted successfully' });
   } catch (error) {
+    console.error('Error in deleteMovie:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -147,10 +198,18 @@ exports.getTheaters = async (req, res) => {
 
 exports.createTheater = async (req, res) => {
   try {
-    const theater = new Theater(req.body);
+    const theater = new Theater({
+      name: req.body.name,
+      location: req.body.location,
+      capacity: req.body.capacity,
+      screenType: req.body.screenType,
+      amenities: req.body.amenities || []
+    });
+
     await theater.save();
     res.status(201).json(theater);
   } catch (error) {
+    console.error('Error in createTheater:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -159,20 +218,39 @@ exports.updateTheater = async (req, res) => {
   try {
     const theater = await Theater.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      {
+        name: req.body.name,
+        location: req.body.location,
+        capacity: req.body.capacity,
+        screenType: req.body.screenType,
+        amenities: req.body.amenities,
+        isActive: req.body.isActive
+      },
       { new: true }
     );
+
+    if (!theater) {
+      return res.status(404).json({ message: 'Theater not found' });
+    }
+
     res.json(theater);
   } catch (error) {
+    console.error('Error in updateTheater:', error);
     res.status(500).json({ message: error.message });
   }
 };
 
 exports.deleteTheater = async (req, res) => {
   try {
-    await Theater.findByIdAndDelete(req.params.id);
+    const theater = await Theater.findByIdAndDelete(req.params.id);
+    
+    if (!theater) {
+      return res.status(404).json({ message: 'Theater not found' });
+    }
+
     res.json({ message: 'Theater deleted successfully' });
   } catch (error) {
+    console.error('Error in deleteTheater:', error);
     res.status(500).json({ message: error.message });
   }
 };
