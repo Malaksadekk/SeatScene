@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 
 .body{
-  background-color: #282c34;
+  background-color: #363942;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,6 +21,9 @@
   background-color: #282c34;
   width: 100%;
   gap: 2.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .profile-left {
   background: #232334;
@@ -327,25 +330,123 @@
 }
 
 .booking-toggle {
-  background: none;
+  padding: 0.8rem 1.5rem;
+  background: transparent;
   border: none;
-  outline: none;
-  color: #bdbdbd;
+  color: #fff;
   font-size: 1.1rem;
-  font-weight: 500;
-  padding: 12px 28px 10px 28px;
   cursor: pointer;
-  border-radius: 0;
-  border-bottom: 3px solid transparent;
-  transition: color 0.2s, border-bottom 0.2s, background 0.2s;
-  margin-top: 100px;
+  position: relative;
 }
 
-.booking-toggle:hover,
 .booking-toggle.active {
-  color: #a259e6;
-  border-bottom: 3px solid #a259e6;
+  color: #bf00ff;
+}
+
+.booking-toggle.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #bf00ff;
+}
+
+.booking-tabs {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.tab {
   background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+  position: relative;
+}
+
+.tab.active {
+  color: #bf00ff;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #bf00ff;
+}
+
+.bookings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.booking-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.booking-type {
+  color: #bf00ff;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.booking-title {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.booking-details {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  color: #ccc;
+}
+
+.booking-id {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #666;
+}
+
+.cancel-booking {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cancel-booking:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.no-bookings {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
 }
 
 .profile-page-logo {

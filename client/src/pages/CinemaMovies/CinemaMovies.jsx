@@ -66,7 +66,7 @@ const CinemaMovies = () => {
           const poster = STATIC_POSTERS[movie.title] || movie.posterUrl || DEFAULT_IMAGE;
           
           return {
-          ...movie,
+            ...movie,
             poster,
             title: movie.title || 'Untitled',
             description: movie.description || '',
@@ -141,13 +141,14 @@ const CinemaMovies = () => {
       if (!selectedMovieId || typeof selectedMovieId !== 'string' || selectedMovieId.length !== 24) {
         console.warn('movieId is not a valid MongoDB ObjectId:', selectedMovieId);
       }
-      navigate('/seating', { 
-        state: { 
-          movieId: selectedMovieId, 
-          showTime: selectedTime,
-          movieName: selectedMovie?.title
-        } 
-      });
+      // Log the exact state being passed
+      const state = { 
+        movie: selectedMovie,
+        selectedTime: selectedTime,
+        location: selectedLocation
+      };
+      console.log('Navigating to seating with state:', state);
+      navigate('/CinemaSeating', { state });
     }
   };
 
@@ -204,7 +205,7 @@ const CinemaMovies = () => {
                     movie.showtimes.map((time, i) => (
                       <button
                         key={i}
-                        className={`showtime-btn ${selectedTime === time && selectedMovieId === movie._id ? 'selected' : ''}`}
+                        className={`showtime-btn${selectedTime === time && selectedMovieId === movie._id ? ' selected' : ''}`}
                         onClick={() => handleTimeSelect(movie._id, time)}
                       >
                         {time}
@@ -237,7 +238,7 @@ const CinemaMovies = () => {
         {Array.from({ length: maxSlide + 1 }).map((_, idx) => (
           <span
             key={idx}
-            className={`slider-dot ${idx === slideIndex ? 'active' : ''}`}
+            className={`slider-dot${idx === slideIndex ? ' active' : ''}`}
           ></span>
         ))}
       </div>

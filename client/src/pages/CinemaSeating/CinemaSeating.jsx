@@ -1,163 +1,214 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './CinemaSeating.css';
 
-function CinemaSeating() {
-  const navigate = useNavigate();
+const CinemaSeating = () => {
   const location = useLocation();
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const [movieTitle, setMovieTitle] = useState('');
-  const [showtime, setShowtime] = useState('');
+  const navigate = useNavigate();
+  const { movie, selectedTime, location: cinemaLocation } = location.state || {};
+
   const [seats, setSeats] = useState([]);
-  const [prices, setPrices] = useState({ regular: 0, vip: 0 });
+  const [selectedSeats, setSelectedSeats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const { movieName, showTime, movieId } = location.state || {};
-    // Debug log for movieId and location.state
-    console.log('CinemaSeating: location.state:', location.state, 'movieId:', movieId);
-    if (!movieId) {
-      setError('No movie selected');
-      setLoading(false);
-      return;
-    }
-    if (movieName) setMovieTitle(movieName);
-    if (showTime) setShowtime(showTime);
+    // Generate seat data
+    const fetchSeats = () => {
+      const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; // 8 rows labeled A to H
+      const seatsPerRow = 12; // 12 seats per row
+      const seatData = [];
 
-    // Fetch seat layout
-    fetch(`/api/seats/layout?movieId=${movieId}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch seat layout');
-        return res.json();
-      })
-      .then(data => {
-        setSeats(data.seats);
-        setPrices(data.prices);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching seats:', err);
-        setError(err.message);
-        setLoading(false);
+      rows.forEach((rowLabel, rowIndex) => {
+        for (let number = 1; number <= seatsPerRow; number++) {
+          if (number === 6 || number === 7) continue; // Central aisle
+
+          let type = 'standard';
+          let price = 10;
+          if (rowIndex <= 1) { // Rows A and B are VIP
+            type = 'vip';
+            price = 20;
+          } else if (rowIndex <= 3) { // Rows C and D are Premium
+            type = 'premium';
+            price = 15;
+          }
+          // Wheelchair-accessible seats in the last row (H)
+          if (rowLabel === 'H' && (number === 1 || number === seatsPerRow)) {
+            type = 'accessible';
+            price = 8;
+          }
+
+          // Realistic booked pattern: more seats booked in the middle rows
+          const isBooked = Math.random() > (rowIndex < 2 || rowIndex > rows.length - 3 ? 0.7 : 0.5);
+
+          seatData.push({
+            id: `${rowLabel}-${number}`,
+            row: rowLabel,
+            number,
+            type,
+            price,
+            isBooked,
+          });
+        }
       });
-  }, [location.state]);
 
-  const toggleSeatSelection = (seatId) => {
-    setSelectedSeats(prev => {
-      if (prev.includes(seatId)) {
-        return prev.filter(seat => seat !== seatId);
-      } else {
-        return [...prev, seatId];
+      setSeats(seatData);
+      setLoading(false);
+    };
+
+    fetchSeats();
+  }, []);
+
+  const handleSeatClick = (seatId) => {
+    const seat = seats.find((s) => s.id === seatId);
+    if (seat?.isBooked) return;
+
+    setSelectedSeats((prev) =>
+      prev.includes(seatId) ? prev.filter((id) => id !== seatId) : [...prev, seatId]
+    );
+  };
+
+  const calculateTotal = () => {
+    return selectedSeats
+      .reduce((total, seatId) => {
+        const seat = seats.find((s) => s.id === seatId);
+        return total + (seat?.price || 0);
+      }, 0)
+      .toFixed(2);
+  };
+
+  const handleBooking = () => {
+    if (selectedSeats.length === 0) return;
+    navigate('/payment', {
+      state: {
+        show: movie,
+        theater: cinemaLocation,
+        time: selectedTime,
+        selectedSeats,
+        totalPrice: calculateTotal()
       }
     });
   };
 
-  const calculateTotalPrice = () => {
-    return selectedSeats.reduce((total, seatId) => {
-      const seat = seats.find(s => `${s.row}${s.number}` === seatId);
-      const price = seat?.type === 'vip' ? prices.vip : prices.regular;
-      return total + price;
-    }, 0);
+  const handleCancel = () => {
+    navigate(-1); // Go back to the previous page
   };
 
-  const totalPrice = calculateTotalPrice();
+  if (loading) {
+    return <div className="loading">Loading seating arrangement...</div>;
+  }
 
-  const formatPrice = (price) => {
-    return `${price.toFixed(2)} EGP`;
-  };
+  if (error) {
+    return <div className="error" role="alert">{error}</div>;
+  }
 
-  const handleConfirmSelection = () => {
-    if (selectedSeats.length === 0) return;
-    const { movieId, showTime, movieName } = location.state || {};
-    navigate('/payment', { 
-      state: { 
-        movieId, 
-        showTime, 
-        movieName,
-        seats: selectedSeats, 
-        totalPrice 
-      } 
-    });
-  };
+  if (!movie || !selectedTime || !cinemaLocation) {
+    return <div className="error" role="alert">Missing movie or showtime information</div>;
+  }
 
-  const handleCancelBooking = () => {
-    if (window.confirm('Are you sure you want to cancel your booking?')) {
-      navigate('/movies');
-    }
-  };
-
-  const renderSeats = () => {
-    if (!seats || seats.length === 0) {
-      return <div className="no-seats-message">No seats available for this movie/showtime.</div>;
-    }
-
-    const seatsByRow = seats.reduce((acc, seat) => {
-      if (!acc[seat.row]) acc[seat.row] = [];
-      acc[seat.row].push(seat);
-      return acc;
-    }, {});
-
-    const sortedRows = Object.keys(seatsByRow).sort();
-
-    return sortedRows.map(row => (
-      <div key={row} className="seat-row">
-        <div className="row-label">{row}</div>
-        {seatsByRow[row].map(seat => {
-          const seatId = `${seat.row}${seat.number}`;
-          const isSelected = selectedSeats.includes(seatId);
-          return (
-            <div
-              key={seatId}
-              className={`seat ${!seat.available ? 'unavailable' : ''} ${isSelected ? 'selected' : ''} ${seat.type === 'vip' ? 'vip' : ''}`}
-              onClick={() => seat.available && toggleSeatSelection(seatId)}
-            >
-              {seat.number}
-            </div>
-          );
-        })}
-        <div className="row-label">{row}</div>
-      </div>
-    ));
-  };
-
-  if (loading) return <div className="loading-message">Loading seats...</div>;
-  if (error) return <div className="error-message">Error: {error}</div>;
+  // Group seats by row for rendering
+  const rows = seats.reduce((acc, seat) => {
+    acc[seat.row] = acc[seat.row] || [];
+    acc[seat.row].push(seat);
+    return acc;
+  }, {});
 
   return (
-    <div className="seating-container">
-      <h1 className="seating-title">Select Seats</h1>
-      <div className="movie-details">
-        <p className="movie-info">{movieTitle}</p>
-        <p className="showtime-info">Time: {showtime}</p>
+    <div className="cinema-seating">
+      <div className="cinema-info">
+        <h2>Select Seats</h2>
+        <p>
+          {movie.title} | {cinemaLocation} | {selectedTime}
+        </p>
       </div>
-      <div className="screen-container">
-        <div className="screen">SCREEN</div>
+
+      <div className="screen" aria-hidden="true">
+        <span>SCREEN</span>
       </div>
-      <div className="seating-chart">{renderSeats()}</div>
-      <div className="seat-legend">
-        <div className="legend-item"><div className="seat available"></div><span>Regular Seat</span></div>
-        <div className="legend-item"><div className="seat vip"></div><span>VIP Seat</span></div>
-        <div className="legend-item"><div className="seat selected"></div><span>Selected</span></div>
-        <div className="legend-item"><div className="seat unavailable"></div><span>Unavailable</span></div>
+
+      <div className="seats-container">
+        {Object.keys(rows).map((row) => (
+          <div key={row} className="seat-row">
+            <span className="row-label">{row}</span>
+            <div className="seats">
+              {rows[row].map((seat) => (
+                <button
+                  key={seat.id}
+                  className={`seat ${seat.isBooked ? 'booked' : 'available'}${selectedSeats.includes(seat.id) ? ' selected' : ''} ${seat.type}`}
+                  onClick={() => handleSeatClick(seat.id)}
+                  disabled={seat.isBooked}
+                  aria-label={`Seat ${seat.number} in row ${seat.row}, ${seat.type}, ${
+                    seat.isBooked ? 'booked' : selectedSeats.includes(seat.id) ? 'selected' : 'available'
+                  }`}
+                  title={`Row ${seat.row}, Seat ${seat.number} (${seat.type}, ${seat.price} EGP)`}
+                >
+                  {seat.type === 'accessible' ? '♿' : seat.number}
+                </button>
+              ))}
+            </div>
+            <span className="row-label">{row}</span>
+          </div>
+        ))}
       </div>
-      <div className="selection-summary">
-        <p>{selectedSeats.length > 0 ? `Selected seats: ${selectedSeats.sort().join(', ')}` : 'No seats selected'}</p>
-        <p className="price-summary">Total: {formatPrice(totalPrice)}</p>
+
+      <div className="legend">
+        <div className="legend-item">
+          <div className="seat available" aria-hidden="true"></div>
+          <span>Regular Seat</span>
+        </div>
+        <div className="legend-item">
+          <div className="seat premium" aria-hidden="true"></div>
+          <span>Premium Seat</span>
+        </div>
+        <div className="legend-item">
+          <div className="seat vip" aria-hidden="true"></div>
+          <span>VIP Seat</span>
+        </div>
+        <div className="legend-item">
+          <div className="seat accessible" aria-hidden="true"></div>
+          <span>Accessible</span>
+        </div>
+        <div className="legend-item">
+          <div className="seat selected" aria-hidden="true"></div>
+          <span>Selected</span>
+        </div>
+        <div className="legend-item">
+          <div className="seat booked" aria-hidden="true"></div>
+          <span>Unavailable</span>
+        </div>
       </div>
-      <div className="action-buttons">
-        <button className="back-button" onClick={() => navigate(-1)}>Back to Movies</button>
-        <button className="cancel-button" onClick={handleCancelBooking}>Cancel Booking</button>
-        <button 
-          className="confirm-button" 
-          disabled={selectedSeats.length === 0} 
-          onClick={handleConfirmSelection}
-        >
-          Confirm Selection
-        </button>
+
+      <div className="booking-summary">
+        <p>{selectedSeats.length > 0 ? `${selectedSeats.length} seats selected` : 'No seats selected'}</p>
+        <p>Total: {calculateTotal()} EGP</p>
+        <div className="button-group">
+          <button
+            className="back-button"
+            onClick={handleCancel}
+            aria-label="Back to movies"
+          >
+            Back to Movies
+          </button>
+          <button
+            className="cancel-button"
+            onClick={() => setSelectedSeats([])}
+            disabled={selectedSeats.length === 0}
+            aria-label="Cancel booking"
+          >
+            Cancel Booking
+          </button>
+          <button
+            className="book-button"
+            onClick={handleBooking}
+            disabled={selectedSeats.length === 0 || loading}
+            aria-busy={loading}
+          >
+            {loading ? 'Processing...' : 'Confirm Selection'}
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default CinemaSeating;

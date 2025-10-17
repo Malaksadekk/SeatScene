@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { generateToken } = require('../utils/jwtHelper');
+const bcrypt = require('bcryptjs');
 
 // Register a new user
 router.post('/register', async (req, res) => {
@@ -26,7 +26,11 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     // Generate JWT token
-    const token = await generateToken(user);
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
     res.json({
       token,
@@ -46,33 +50,32 @@ router.post('/register', async (req, res) => {
 // Login user
 router.post('/login', async (req, res) => {
   try {
-    console.log('Raw request body:', req.body);
     const { email, password } = req.body;
-    console.log('Login attempt:', { email, password });
 
-    // Check if user exists
+    // Find user
     const user = await User.findOne({ email });
-    console.log('User found in MongoDB:', user ? { id: user._id, email: user.email, role: user.role } : 'No user found');
-    
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Validate password using the model's method
-    const isMatch = await user.comparePassword(password);
-    console.log('Password match:', isMatch);
-
+    // Validate password
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Generate JWT token
-    const token = await generateToken(user);
+    // Create token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
+    // Send response
     res.json({
       token,
       user: {
-        id: user.id,
+        id: user._id,
         name: user.name,
         email: user.email,
         role: user.role
@@ -80,7 +83,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

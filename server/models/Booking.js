@@ -6,30 +6,41 @@ const bookingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  movieId: {
+  eventId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
+    ref: 'Event',
     required: true
   },
-  theaterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Theater',
-    required: true
+  seats: {
+    type: [String],
+    required: true,
+    validate: [arr => arr.length > 0, 'At least one seat is required']
   },
-  seats: [{
-    row: Number,
-    number: Number
-  }],
-  totalAmount: {
+  totalPrice: {
     type: Number,
-    required: true
+    required: true,
+    min: [0, 'Price cannot be negative']
+  },
+  paymentDetails: {
+    cardNumber: {
+      type: String,
+      required: true
+    },
+    cardHolder: {
+      type: String,
+      required: true
+    },
+    expiryDate: {
+      type: String,
+      required: true
+    }
   },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'cancelled'],
-    default: 'pending'
+    default: 'confirmed'
   },
-  bookingDate: {
+  createdAt: {
     type: Date,
     default: Date.now
   }

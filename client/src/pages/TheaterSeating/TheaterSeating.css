@@ -1,0 +1,237 @@
+.theater-seating {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #1c2526;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+}
+
+.theater-info {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.theater-info h2 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.theater-info p {
+  font-size: 1rem;
+  color: #b0b0b0;
+}
+
+.screen {
+  background: #444;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  width: 50%;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.seats-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  margin: 0.3rem 0;
+}
+
+.row-label {
+  width: 30px;
+  text-align: center;
+  font-size: 1rem;
+  color: #b0b0b0;
+  font-weight: bold;
+}
+
+.seats {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.seat {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.seat:hover:not(.booked):not(.selected) {
+  transform: scale(1.1);
+}
+
+.seat.available {
+  background: #1e90ff; /* Blue for regular seats */
+  color: #fff;
+}
+
+.seat.premium {
+  background: #1e90ff;
+  color: #fff;
+}
+
+.seat.vip {
+  background: #ffd700; /* Yellow for VIP */
+  color: #000;
+}
+
+.seat.accessible {
+  background: #1e90ff;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.seat.selected {
+  background: #ff00ff; /* Purple for selected */
+  color: #fff;
+}
+
+.seat.booked {
+  background: #555;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+.seat:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.legend-item span {
+  color: #e0e0e0;
+}
+
+.booking-summary {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #2a2f30 !important;
+  border-radius: 4px;
+}
+
+.booking-summary p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #ffffff;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.back-button,
+.cancel-button,
+.book-button {
+  background: #444;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.back-button:hover,
+.cancel-button:hover,
+.book-button:hover:not(:disabled) {
+  background: #666;
+}
+
+.book-button {
+  background: #e91e63;
+}
+
+.book-button:hover:not(:disabled) {
+  background: #c2185b;
+}
+
+.back-button:disabled,
+.cancel-button:disabled,
+.book-button:disabled {
+  background: #333;
+  cursor: not-allowed;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  color: #ff5252;
+}
+
+@media (max-width: 768px) {
+  .theater-seating {
+    padding: 1rem;
+  }
+
+  .seat {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .screen {
+    width: 70%;
+    font-size: 0.9rem;
+  }
+
+  .legend {
+    gap: 0.8rem;
+  }
+
+  .row-label {
+    width: 25px;
+    font-size: 0.9rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .back-button,
+  .cancel-button,
+  .book-button {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}

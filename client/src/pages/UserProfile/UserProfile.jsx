@@ -1,118 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 import logo from '../../assets/profile-placeholder.png';
+
 const UserProfile = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  const [activeButton, setActiveButton] = useState(null); // 'book' or 'logout'
-  const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming' or 'history'
+  const [activeButton, setActiveButton] = useState(null);
+  const [activeTab, setActiveTab] = useState('upcoming');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
+  // Get user data from localStorage instead of fetching
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
 
-  const fetchUserProfile = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      const response = await fetch('/api/users/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch profile');
-      }
-
-      const data = await response.json();
-      setUser(data);
-      setFormData({
-        name: data.name,
-        email: data.email,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      });
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+  // Static bookings data
+  const mockBookings = [
+    {
+      _id: "1",
+      eventName: "A Working Man",
+      eventType: "Movie",
+      date: "2024-05-24",
+      time: "7:00 PM",
+      venue: "Mokattam",
+      seats: ["D4", "D5"],
+      totalPrice: 360,
+      status: "upcoming"
+    },
+    {
+      _id: "2",
+      eventName: "Hamlet",
+      eventType: "Theater",
+      date: "2024-05-30",
+      time: "7:30 PM",
+      venue: "Maadi",
+      seats: ["C8", "C9", "C10"],
+      totalPrice: 450,
+      status: "history"
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    // Validate passwords if changing password
-    if (formData.newPassword) {
-      if (formData.newPassword !== formData.confirmPassword) {
-        setError('New passwords do not match');
-        setLoading(false);
-        return;
-      }
-      if (!formData.currentPassword) {
-        setError('Current password is required to change password');
-        setLoading(false);
-        return;
-      }
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/users/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
-      }
-
-      const data = await response.json();
-      setUser(data);
-      setIsEditing(false);
-      setFormData(prev => ({
-        ...prev,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      }));
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  ];
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -120,24 +44,51 @@ const UserProfile = () => {
     navigate('/login');
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error-message">{error}</div>;
+  const renderBookingCard = (booking) => (
+    <div key={booking._id} className="booking-card">
+      <div className="booking-type">{booking.eventType}</div>
+      <h3 className="booking-title">{booking.eventName}</h3>
+      
+      <div className="booking-details">
+        <div className="detail-row">
+          <span>Date:</span>
+          <span>{booking.date}</span>
+        </div>
+        <div className="detail-row">
+          <span>Time:</span>
+          <span>{booking.time}</span>
+        </div>
+        <div className="detail-row">
+          <span>Venue:</span>
+          <span>{booking.venue}</span>
+        </div>
+        <div className="detail-row">
+          <span>Seats:</span>
+          <span>{booking.seats.join(', ')}</span>
+        </div>
+        <div className="detail-row">
+          <span>Price:</span>
+          <span>{booking.totalPrice} EGP</span>
+        </div>
+      </div>
+    </div>
+  );
+
   if (!user) return null;
+
+  const filteredBookings = mockBookings.filter(booking => 
+    activeTab === 'upcoming' ? booking.status === 'upcoming' : booking.status === 'history'
+  );
 
   return (
     <div className="profile-container">
-      {/* Left column: User info and actions */}
       <div className="profile-left">
         <div className="profile-logo">
-          <img
-            src={logo}
-            alt="Logo"
-            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-          />
+          <img src={logo} alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
         </div>
         <div className="profile-name">{user.name}</div>
         <div className="profile-email">{user.email}</div>
-        <div className="profile-member">Member since: {new Date(user.createdAt).toLocaleDateString()}</div>
+        
         <button
           className={`profile-action-btn${activeButton === 'book' ? ' active' : ''}`}
           onClick={() => { setActiveButton('book'); navigate('/venue-selection'); }}
@@ -151,9 +102,8 @@ const UserProfile = () => {
           Logout
         </button>
       </div>
-      {/* Right column: Bookings and tabs */}
+
       <div className="profile-right">
-        {/* Toggle buttons for bookings */}
         <div className="booking-toggle-buttons">
           <button
             className={`booking-toggle${activeTab === 'upcoming' ? ' active' : ''}`}
@@ -168,10 +118,15 @@ const UserProfile = () => {
             Booking History
           </button>
         </div>
-        {/* Bookings content placeholder (replace with your actual bookings rendering) */}
-        <div style={{marginTop: '2rem', color: '#fff', fontSize: '1.2rem', textAlign: 'center'}}>
-          {/* TODO: Render bookings here */}
-          Your bookings will appear here.
+
+        <div className="bookings-list">
+          {filteredBookings.length > 0 ? (
+            filteredBookings.map(renderBookingCard)
+          ) : (
+            <div className="no-bookings">
+              No {activeTab} bookings found
+            </div>
+          )}
         </div>
       </div>
     </div>

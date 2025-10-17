@@ -80,7 +80,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/seats', seatsRoutes);
-app.use('/api/booking', bookingRoutes);
+app.use('/api/bookings', bookingRoutes);
 app.use('/api/theaters', theaterRoutes);
 
 // Error handling middleware
@@ -96,4 +96,4 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   console.log('404 Not Found:', req.method, req.url);
   res.status(404).json({ message: 'Route not found' });
-}); 
+});

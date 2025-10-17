@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './TheaterShows.css';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { getAllTheaterShows } from '../../services/theaterservices';
+import { useLocation, useNavigate } from 'react-router-dom';
+// import { getAllTheaterShows } from '../../services/theaterservices';
+// import axios from 'axios';
 
 // Import images from assets
 import show1Poster from '../../assets/omar khairat.jpg';
@@ -21,45 +22,88 @@ const STATIC_POSTERS = {
 
 const DEFAULT_IMAGE = 'https://via.placeholder.com/180x260?text=No+Image';
 
+const DUMMY_SHOWS = [
+  {
+    _id: '1',
+    title: 'Omar Khairat',
+    name: 'Cairo Opera House',
+    location: 'Cairo',
+    capacity: 500,
+    screenType: 'IMAX',
+    amenities: ['Premium Seating', 'Air Conditioning', 'Wheelchair Access'],
+    showtimes: ['19:00', '21:00'],
+    isActive: true,
+    createdAt: '2023-01-01T18:00:00Z',
+    poster: show1Poster
+  },
+  {
+    _id: '2',
+    title: '20century',
+    name: 'Alexandria Opera House',
+    location: 'Alexandria',
+    capacity: 400,
+    screenType: 'IMAX',
+    amenities: ['Premium Seating', 'Air Conditioning', 'Wheelchair Access'],
+    showtimes: ['18:00', '20:00'],
+    isActive: true,
+    createdAt: '2023-01-02T18:00:00Z',
+    poster: show2Poster
+  },
+  {
+    _id: '3',
+    title: 'Russian National Dance',
+    name: 'Cairo Opera House',
+    location: 'Cairo',
+    capacity: 300,
+    screenType: 'IMAX',
+    amenities: ['Premium Seating', 'Air Conditioning', 'Wheelchair Access'],
+    showtimes: ['19:30', '21:30'],
+    isActive: true,
+    createdAt: '2023-01-03T18:00:00Z',
+    poster: show3Poster
+  },
+  {
+    _id: '4',
+    title: 'بليغ و ورده',
+    name: 'Alexandria Opera House',
+    location: 'Alexandria',
+    capacity: 350,
+    screenType: 'IMAX',
+    amenities: ['Premium Seating', 'Air Conditioning', 'Wheelchair Access'],
+    showtimes: ['20:00', '22:00'],
+    isActive: true,
+    createdAt: '2023-01-04T18:00:00Z',
+    poster: show4Poster
+  },
+  {
+    _id: '5',
+    title: 'وهابيات',
+    name: 'Cairo Opera House',
+    location: 'Cairo',
+    capacity: 450,
+    screenType: 'IMAX',
+    amenities: ['Premium Seating', 'Air Conditioning', 'Wheelchair Access'],
+    showtimes: ['18:30', '20:30'],
+    isActive: true,
+    createdAt: '2023-01-05T18:00:00Z',
+    poster: show5Poster
+  }
+];
+
 const TheaterShows = () => {
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedShowId, setSelectedShowId] = useState(null);
-  const navigate = useNavigate();
   const locationState = useLocation();
   const selectedLocation = locationState.state?.location || 'Choose a location';
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchShows = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAllTheaterShows();
-        if (!data || !Array.isArray(data)) throw new Error('Invalid data format received from server');
-        const processed = data.map((show) => {
-          const poster = STATIC_POSTERS[show.title] || DEFAULT_IMAGE;
-          return {
-            ...show,
-            poster,
-            title: show.title || 'Untitled',
-            capacity: show.capacity,
-            amenities: show.amenities || [],
-            showtimes: Array.isArray(show.showtimes) ? show.showtimes : [],
-            isActive: show.isActive,
-            createdAt: show.createdAt
-          };
-        });
-        setShows(processed);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch shows');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchShows();
+    // Use dummy data instead of fetching from MongoDB
+    setShows(DUMMY_SHOWS);
+    setLoading(false);
   }, []);
 
   const maxSlide = Math.max(0, Math.ceil(shows.length / 2) - 1);
@@ -77,17 +121,24 @@ const TheaterShows = () => {
     setSelectedShowId(showId);
   };
 
-  const handleImageError = (e, showTitle) => {
+  const handleImageError = (e) => {
     e.target.src = DEFAULT_IMAGE;
   };
 
   const handleBuyTicket = () => {
-    // Remove navigation to /theater-seating
-    // This feature is no longer supported
+    if (selectedTime && selectedShowId) {
+      const selectedShow = shows.find(show => show._id === selectedShowId);
+      navigate('/TheaterSeating', {
+        state: {
+          show: selectedShow,
+          selectedTime,
+          location: selectedShow.location
+        }
+      });
+    }
   };
 
   if (loading) return <div className="movies-loading">Loading shows...</div>;
-  if (error) return <div className="movies-error">Error: {error}</div>;
   if (shows.length === 0) return <div className="movies-empty">No shows available</div>;
 
   const visibleShows = shows.slice(slideIndex * 2, slideIndex * 2 + 2);
@@ -111,9 +162,14 @@ const TheaterShows = () => {
                 src={show.poster}
                 alt={show.title}
                 className="movie-poster"
-                onError={(e) => handleImageError(e, show.title)}
+                onError={handleImageError}
               />
               <div className="movie-title">{show.title}</div>
+              <div><strong>Theater Name:</strong> {show.name}</div>
+              <div><strong>Showtimes:</strong> {Array.isArray(show.showtimes) ? show.showtimes.join(', ') : ''}</div>
+              <div><strong>Location:</strong> {show.location}</div>
+              <div><strong>Capacity:</strong> {show.capacity}</div>
+              <div><strong>Screen Type:</strong> {show.screenType}</div>
               <div className="showtimes-section">
                 <div className="showtimes-label">Showtimes</div>
                 <div className="showtimes-list">
@@ -121,7 +177,7 @@ const TheaterShows = () => {
                     show.showtimes.map((time, i) => (
                       <button
                         key={i}
-                        className={`showtime-btn ${selectedTime === time && selectedShowId === show._id ? 'selected' : ''}`}
+                        className={`showtime-btn${selectedTime === time && selectedShowId === show._id ? ' selected' : ''}`}
                         onClick={() => handleTimeSelect(show._id, time)}
                       >
                         {time}
@@ -154,7 +210,7 @@ const TheaterShows = () => {
         {Array.from({ length: maxSlide + 1 }).map((_, idx) => (
           <span
             key={idx}
-            className={`slider-dot ${idx === slideIndex ? 'active' : ''}`}
+            className={`slider-dot${idx === slideIndex ? ' active' : ''}`}
           ></span>
         ))}
       </div>

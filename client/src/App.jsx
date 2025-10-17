@@ -4,13 +4,17 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/UserProfile/UserProfile';
 import Admin from './pages/AdminDashboard/Admin';
-import NavHeader from './componets/NavHeader';
+import NavHeader from './pages/Shared/NavHeader';
+import TheaterSeating from './pages/TheaterSeating/TheaterSeating';
 import CinemaMovies from './pages/CinemaMovies/CinemaMovies';
 import CinemaSeating from './pages/CinemaSeating/CinemaSeating';
 import Homepage from './pages/homepage/home';
 import VenueSelection from './pages/VenueSelection/VenueSelection';
 import TheaterShows from './pages/TheaterShows/TheaterShows';
 import LocationSelection from './pages/LocationSelection/LocationSelection';
+import Payment from './pages/Payment/Payment';
+import CardDetails from './pages/CardDetails/CardDetails';
+import Confirmation from './pages/Confirmation/Confirmation';
 
 function AppContent() {
   const location = useLocation();
@@ -41,7 +45,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/seating"
+          path="/CinemaSeating"
           element={
             <ProtectedRoute>
               <CinemaSeating />
@@ -49,10 +53,18 @@ function AppContent() {
           }
         />
         <Route
-          path="/theater-seating/:showId"
+          path="/TheaterSeating"
           element={
             <ProtectedRoute>
-              {/* TheaterSeating removed */}
+              <TheaterSeating />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/TheaterSeating/:showId"
+          element={
+            <ProtectedRoute>
+              <TheaterSeating />
             </ProtectedRoute>
           }
         />
@@ -61,6 +73,22 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <Payment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/card-details"
+          element={
+            <ProtectedRoute>
+              <CardDetails />
             </ProtectedRoute>
           }
         />
@@ -77,6 +105,12 @@ function AppContent() {
         <Route path="/" element={<Homepage />} />
         <Route path="/venue-selection" element={<VenueSelection />} />
         <Route path="/location-selection" element={<LocationSelection />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/theater-shows" element={<TheaterShows />} />
+        <Route path="/cinema-seating" element={<CinemaSeating />} />
+        <Route path="/TheaterSeating/:showId" element={<TheaterSeating />} />
       </Routes>
     </>
   );
